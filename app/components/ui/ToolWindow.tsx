@@ -48,7 +48,6 @@ const CATEGORY_ICONS: Record<BuildingCategory, string> = {
   residential: "🏠",
   commercial: "🏪",
   props: "🌳",
-  christmas: "🎄",
   civic: "🏛️",
   landmark: "🏰",
 };

@@ -1,8 +1,6 @@
-# Pogicity
+# isometric-city
 
 An isometric city builder engine built with Phaser 3 and Next.js. Place buildings, lay roads, and watch citizens and cars roam your city.
-
-This is a foundation for building isometric strategy games—city builders, tycoon games, RTS, or anything that needs a tile-based isometric world.
 
 ## Features
 
@@ -13,7 +11,7 @@ This is a foundation for building isometric strategy games—city builders, tyco
 - **Vehicles** - Cars that drive along roads
 - **Save/Load** - Persist your city to localStorage
 - **Multiple Tile Types** - Grass, asphalt, snow, and more
-- **Building Categories** - Residential, commercial, civic, landmarks, props, and seasonal (Christmas!)
+- **Building Categories** - Residential, commercial, civic, landmarks, and props
 
 ## Getting Started
 

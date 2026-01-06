@@ -70,7 +70,7 @@ Buildings are defined in `app/data/buildings.ts`. Structure:
 "building-id": {
   id: "building-id",
   name: "Display Name",
-  category: "residential" | "commercial" | "civic" | "landmark" | "props" | "christmas",
+  category: "residential" | "commercial" | "civic" | "landmark" | "props";
   footprint: { south: [width, height], east: [width, height], ... },
   sprites: {
     south: "/Building/category/WxHname_south.png",

@@ -1,0 +1,16 @@
+{
+  "152-sturt-st": {
+    "id": "152-sturt-st",
+    "name": "152 Sturt St",
+    "category": "residential",
+    "footprint": {
+      "width": 3,
+      "height": 6
+    },
+    "sprites": {
+      "south": "assets/image-refs/152-sturt-st.png"
+    },
+    "icon": "🏢",
+    "supportsRotation": false
+  }
+}

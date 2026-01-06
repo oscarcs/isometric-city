@@ -1,12 +1,5 @@
 # Project Guidelines for Claude
 
-## Notifications
-
-Play a system ping sound (`afplay /System/Library/Sounds/Ping.aiff`) when:
-- Finishing a long-running task
-- Needing user input or asking a question
-- Encountering an error that blocks progress
-
 ## Tech Stack
 
 - **Framework:** Next.js 16 with React 19, TypeScript 5, App Router
@@ -55,7 +48,7 @@ npm run lint    # ESLint
 - Phaser → React: via callbacks (`onTileClick`, `onTilesDrag`)
 
 **Isometric System:**
-- Tile size: 44x22 pixels
+- Tile size: 32x16 pixels
 - Roads snap to 4x4 grid segments
 - Depth sorting: `depth = (x + y) * DEPTH_Y_MULT`
 

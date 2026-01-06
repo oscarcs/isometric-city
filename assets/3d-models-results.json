@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-01-06T14:17:09.481Z",
+  "total": 1,
+  "successful": 1,
+  "failed": 0,
+  "skipped": 0,
+  "results": [
+    {
+      "buildingId": "152-sturt-st",
+      "status": "success",
+      "glbPath": "assets/3d-models/152-sturt-st.glb",
+      "requestId": "4b66566f-6e89-491c-a2e4-0f47e766f0de",
+      "duration": 50,
+      "timestamp": "2026-01-06T14:17:09.477Z"
+    }
+  ]
+}

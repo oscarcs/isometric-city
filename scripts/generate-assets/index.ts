@@ -6,7 +6,7 @@
  * This script:
  * 1. Reads addresses from a text file
  * 2. Captures Google Maps 3D satellite views using Playwright
- * 3. Uses Gemini AI to infer metadata and generate isometric sprites
+ * 3. Uses Gemini AI to infer metadata and generate isometric reference image
  * 4. Saves sprites to the configured output directory
  * 5. Updates app/data/generated-buildings.json
  */
@@ -20,9 +20,9 @@ import type { ProcessingResult, BuildingDefinition } from './types.js';
 import { validateEnv, generateBuildingId, generateFilename, delay } from './utils.js';
 import { geocodeAddress, getPlaceDetails, inferMetadata } from './metadataService.js';
 import { capture3DView } from './mapCapture.js';
-import { generateIsometricSprite } from './refImageService.js';
-import { readAddresses, saveSprite, saveResults } from './fileManager.js';
-import { addBuildingToRegistry, buildingExists } from './buildingRegistry.js';
+import { generateIsometricSprite as generateIsometricRefImage } from './refImageService.js';
+import { readAddresses, saveSprite, saveResults } from '../shared/fileManager.js';
+import { addBuildingToRegistry, buildingExists } from '../shared/buildingRegistry.js';
 
 config();
 
@@ -113,15 +113,15 @@ async function processAddress(
     )
 
     // Step 5: Generate isometric ref image
-    spinner.start('Generating isometric sprite with Gemini...');
-    const spriteBuffer = await generateIsometricSprite(screenshot, metadata, config.geminiApiKey);
-    spinner.succeed('Sprite generated');
+    spinner.start('Generating isometric reference image with Gemini...');
+    const refImageBuffer = await generateIsometricRefImage(screenshot, metadata, config.geminiApiKey);
+    spinner.succeed('Reference image generated');
 
     // Step 6: Save ref image
-    spinner.start('Saving sprite...');
+    spinner.start('Saving reference image...');
     const filename = generateFilename({ name: placeDetails?.name });
     const refImagePath = await saveSprite(
-      spriteBuffer,
+      refImageBuffer,
       filename,
       config.outputDir,
       config.skipExisting
@@ -136,11 +136,9 @@ async function processAddress(
       name: metadata.name,
       category: metadata.category,
       footprint: metadata.footprint,
-      sprites: {
-        south: relativeRefImagePath,
-      },
+      refImage: relativeRefImagePath,
       icon: metadata.icon,
-      supportsRotation: false, // Single direction for now
+      supportsRotation: true,
     };
 
     // Step 8: Add to registry
@@ -195,8 +193,8 @@ async function runPipeline(): Promise<void> {
   const inputFile = path.resolve(options.input);
   const outputDir = path.resolve(options.output);
   const headless = options.headless === 'true';
-  const skipExisting = options.skipExisting;
   const forceRegenerate = options.forceRegenerate;
+  const skipExisting = forceRegenerate ? false : options.skipExisting;
   const rateLimitDelayMs = parseInt(process.env.RATE_LIMIT_DELAY_MS || '2000', 10);
 
   console.log(chalk.bold('Configuration:'));

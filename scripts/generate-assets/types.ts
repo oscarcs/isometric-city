@@ -35,14 +35,16 @@ export interface BuildingDefinition {
   name: string;
   category: BuildingCategory;
   footprint: { width: number; height: number };
-  sprites: {
-    south: string;
+  refImage?: string; // Intermediate reference image from Step 1
+  sprites?: {
+    south?: string;
     north?: string;
     east?: string;
     west?: string;
   };
   icon: string;
   supportsRotation?: boolean;
+  '3dModel'?: string;
 }
 
 export interface BuildingAsset {

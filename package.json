@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate-assets": "tsx scripts/generate-assets/index.ts"
+    "generate-assets": "tsx scripts/generate-assets/index.ts",
+    "generate-3d-models": "tsx scripts/generate-3d-models/index.ts"
   },
   "dependencies": {
+    "@fal-ai/client": "^1.8.1",
     "dotenv": "^17.2.3",
     "gifuct-js": "^2.1.2",
     "next": "16.1.1",

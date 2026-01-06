@@ -20,11 +20,10 @@ export async function generateIsometricSprite(
 
 REQUIREMENTS:
 - Isometric perspective: 2:1 ratio, 30° from top-down
-- White background
 - Canvas: 512x512 minimum
 - Anchor: Building front corner at bottom-center
-- Style: Clean, game-ready 3D asset in a high resolution SimCity 4 style
-- Isolation: ONLY the target building with nothing else
+- Style: Clean, game-ready 3D asset in a high resolution photorealistic style.
+- Isolation: ONLY the target building on a plain white background
 - No ground plane, no shadows
 `;
 

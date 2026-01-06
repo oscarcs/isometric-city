@@ -5,12 +5,11 @@
     "category": "residential",
     "footprint": {
       "width": 3,
-      "height": 6
+      "height": 4
     },
-    "sprites": {
-      "south": "assets/image-refs/152-sturt-st.png"
-    },
-    "icon": "🏢",
-    "supportsRotation": false
+    "refImage": "assets/image-refs/152-sturt-st.png",
+    "icon": "🏘️",
+    "supportsRotation": true,
+    "3dModel": "assets/3d-models/152-sturt-st.glb"
   }
 }

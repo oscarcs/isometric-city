@@ -120,8 +120,9 @@ Large buildings occupy multiple grid cells but are rendered as a single sprite a
 ```typescript
 interface BuildingDefinition {
   footprint: { width: number; height: number };
-  sprites: {
-    south: string;  // Default facing
+  refImage?: string;  // Optional: intermediate reference image
+  sprites?: {
+    south?: string;  // Default facing
     north?: string;
     east?: string;
     west?: string;
@@ -168,6 +169,7 @@ Buildings are defined in `app/data/buildings.ts`:
   name: "My Building",
   category: "commercial",
   footprint: { width: 2, height: 2 },
+  refImage: "assets/image-refs/my-building.png",  // Optional: intermediate reference
   sprites: {
     south: "/Building/commercial/2x2my_building_south.png",
     north: "/Building/commercial/2x2my_building_north.png",

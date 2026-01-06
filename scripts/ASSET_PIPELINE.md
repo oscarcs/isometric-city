@@ -65,7 +65,7 @@ This will:
    - Generate isometric sprite using Gemini
    - Save PNG to `assets/image-refs/{building-name}.png`
    - Register building in `app/data/generated-buildings.json`
-3. Save processing results and summary to `results.json`
+3. Save processing results and summary to `assets/results.json`
 
 ### Options
 
@@ -79,9 +79,11 @@ npm run generate-assets -- --output assets/custom-renders
 # Run browser in visible mode (default: true/headless)
 npm run generate-assets -- --headless false
 
-# Skip buildings that already exist (default: false)
-npm run generate-assets -- --skip-existing
+# Force regenerate existing buildings (by default, existing buildings are skipped)
+npm run generate-assets -- --force-regenerate
 ```
+
+**Note:** The pipeline is incremental by default - it will skip buildings that already exist in `app/data/generated-buildings.json` to avoid expensive API calls. Use `--force-regenerate` to regenerate all buildings even if they already exist.
 
 ## Pipeline Flow
 
@@ -89,20 +91,23 @@ For each address:
 
 1. **Geocode** → Get latitude/longitude and place ID from address using Google Geocoding API
 2. **Place Details** → Get building name and types from Google Places API
-3. **Screenshot** → Launch Playwright browser, navigate to 3D satellite view, wait 8s, capture image
-4. **Infer Metadata** → Use Gemini (GEMINI_MODEL_METADATA) to determine:
+3. **Check Existence** → Generate building ID and check if it already exists in registry
+   - If exists and not forcing regeneration: **skip remaining steps** (saves API costs)
+   - If not exists or forcing regeneration: continue to next step
+4. **Screenshot** → Launch Playwright browser, navigate to 3D satellite view, wait 8s, capture image
+5. **Infer Metadata** → Use Gemini (GEMINI_MODEL_METADATA) to determine:
    - Category: residential, commercial, civic, landmark, or props
    - Footprint: width and height in 1-8 grid cells
    - Name: Uses place name if available, otherwise generates concise 2-3 word name
    - Icon: Single emoji representing the building
-5. **Generate Image** → Use Gemini (GEMINI_MODEL_IMAGE) to create isometric sprite:
+6. **Generate Image** → Use Gemini (GEMINI_MODEL_IMAGE) to create isometric sprite:
    - Isometric perspective with 2:1 ratio, 30° angle
    - 512x512+ white background canvas
    - Building anchored at bottom-center
    - SimCity 4 style, high-resolution 3D asset
    - No ground plane or shadows, isolated building only
-6. **Save** → Write PNG to `assets/image-refs/{building-name}.png`
-7. **Register** → Add metadata entry to `app/data/generated-buildings.json`
+7. **Save** → Write PNG to `assets/image-refs/{building-name}.png`
+8. **Register** → Add metadata entry to `app/data/generated-buildings.json`
 
 ## Output
 
@@ -110,7 +115,7 @@ For each address:
 
 - **Intermediate Images**: `assets/image-refs/{building-name}.png`
 - **Metadata Registry**: `app/data/generated-buildings.json`
-- **Processing Log**: `results.json`
+- **Processing Log**: `assets/results.json`
 
 Note: These are intermediate images for the 3D modeling pipeline, not final game sprites.
 

@@ -35,7 +35,8 @@ program
   .option('-i, --input <file>', 'Input file with addresses', 'scripts/config/addresses.txt')
   .option('-o, --output <dir>', 'Output directory for generated images', 'assets/image-refs')
   .option('--headless <boolean>', 'Run browser in headless mode', 'true')
-  .option('--skip-existing', 'Skip addresses that already have sprites', false)
+  .option('--skip-existing', 'Skip addresses that already have sprites', true)
+  .option('--force-regenerate', 'Force regeneration of existing buildings', false)
   .parse();
 
 const options = program.opts();
@@ -52,6 +53,7 @@ async function processAddress(
     outputDir: string;
     headless: boolean;
     skipExisting: boolean;
+    forceRegenerate: boolean;
   }
 ): Promise<ProcessingResult> {
   const startTime = Date.now();
@@ -73,7 +75,21 @@ async function processAddress(
       throw new Error('Place details unavailable: Name is required for deterministic asset generation.');
     }
 
-    // Step 3: Capture screenshot
+    // Generate building ID early to check for existing buildings
+    const buildingId = generateBuildingId(placeDetails?.name);
+
+    // Check if building already exists (before expensive operations)
+    if (!config.forceRegenerate && config.skipExisting && (await buildingExists(buildingId))) {
+      spinner.warn(`Building "${buildingId}" already exists, skipping`);
+      return {
+        address,
+        status: 'skipped',
+        buildingId,
+        timestamp: new Date().toISOString(),
+      };
+    }
+
+    // Step 3: Capture screenshot (expensive operation)
     spinner.start('Capturing Google Maps 3D view...');
     const screenshot = await capture3DView(
       geocodeResult.lat,
@@ -83,7 +99,7 @@ async function processAddress(
     );
     spinner.succeed('Screenshot captured');
 
-    // Step 4: Infer metadata from screenshot
+    // Step 4: Infer metadata from screenshot (expensive Gemini call)
     spinner.start('Inferring building metadata with Gemini...');
     const metadata = await inferMetadata(
       screenshot,
@@ -94,21 +110,7 @@ async function processAddress(
     );
     spinner.succeed(
       `Metadata: ${metadata.category}, ${metadata.footprint.width}x${metadata.footprint.height}, "${metadata.name}" ${metadata.icon}`
-    );
-
-    // Generate building ID
-    const buildingId = generateBuildingId(placeDetails?.name);
-
-    // Check if building already exists
-    if (config.skipExisting && (await buildingExists(buildingId))) {
-      spinner.warn(`Building "${buildingId}" already exists, skipping`);
-      return {
-        address,
-        status: 'skipped',
-        buildingId,
-        timestamp: new Date().toISOString(),
-      };
-    }
+    )
 
     // Step 5: Generate isometric ref image
     spinner.start('Generating isometric sprite with Gemini...');
@@ -194,13 +196,15 @@ async function runPipeline(): Promise<void> {
   const outputDir = path.resolve(options.output);
   const headless = options.headless === 'true';
   const skipExisting = options.skipExisting;
+  const forceRegenerate = options.forceRegenerate;
   const rateLimitDelayMs = parseInt(process.env.RATE_LIMIT_DELAY_MS || '2000', 10);
 
   console.log(chalk.bold('Configuration:'));
   console.log(chalk.gray(`  Input: ${inputFile}`));
   console.log(chalk.gray(`  Output: ${outputDir}`));
   console.log(chalk.gray(`  Headless: ${headless}`));
-  console.log(chalk.gray(`  Skip existing: ${skipExisting}\n`));
+  console.log(chalk.gray(`  Skip existing: ${skipExisting}`));
+  console.log(chalk.gray(`  Force regenerate: ${forceRegenerate}\n`));
 
   // Read addresses
   let addresses: string[];
@@ -233,6 +237,7 @@ async function runPipeline(): Promise<void> {
       outputDir,
       headless,
       skipExisting,
+      forceRegenerate,
     });
 
     results.push(result);
@@ -244,7 +249,7 @@ async function runPipeline(): Promise<void> {
   }
 
   // Save results
-  const resultsPath = path.join(process.cwd(), 'results.json');
+  const resultsPath = path.join(process.cwd(), 'assets', 'results.json');
   await saveResults(results, resultsPath);
 
   // Print summary

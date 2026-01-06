@@ -183,7 +183,19 @@ Buildings are defined in `app/data/buildings.ts`:
 
 ## Asset Pipeline
 
-Want to make your own isometric buildings? Here's a modern AI-assisted pipeline:
+See [scripts/ASSET_PIPELINE.md](scripts/ASSET_PIPELINE.md) for the full autonomous asset generation pipeline.
+
+The pipeline generates isometric building sprites from real-world addresses using Google Maps and Gemini AI. It's **incremental by default** - buildings that already exist are automatically skipped to avoid expensive API calls.
+
+```bash
+# Generate new buildings (skips existing ones)
+npm run generate-assets
+
+# Force regenerate all buildings
+npm run generate-assets -- --force-regenerate
+```
+
+### Manual Asset Creation Workflow
 
 ### 1. Generate Concept Art
 

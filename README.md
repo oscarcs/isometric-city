@@ -71,7 +71,7 @@ public/
 
 Isometric projection creates a 3D-like view from 2D sprites. This engine uses **2:1 isometric** (also called "true isometric" or "dimetric"), where:
 
-- Tiles are diamond-shaped, **44x22 pixels**
+- Tiles are diamond-shaped, **32x16 pixels**
 - The X-axis goes down-right
 - The Y-axis goes down-left
 - Depth (what's in front) is determined by position
@@ -221,7 +221,7 @@ Clean up your renders and ensure consistency:
 
 | Property | Value |
 |----------|-------|
-| Tile size | 44x22 pixels |
+| Tile size | 32x16 pixels |
 | Canvas size | 512x512 (or larger for big buildings) |
 | Anchor point | Bottom-center (front corner of building) |
 | Format | PNG with transparency |

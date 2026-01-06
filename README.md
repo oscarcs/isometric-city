@@ -153,42 +153,6 @@ for (let slice = 0; slice < numSlices; slice++) {
 
 ---
 
-## Build Your Own Game
-
-This engine is designed as a starting point. Here are some directions you could take it:
-
-### City Builder (SimCity-style)
-- Add zoning (residential/commercial/industrial)
-- Implement population and demand simulation
-- Create budget and tax systems
-- Add city services (police, fire, hospitals)
-
-### Tycoon Game
-- Add economy and resource management
-- Create customer/visitor AI
-- Implement business progression
-- Add scenarios and challenges
-
-### RTS (Real-Time Strategy)
-- Add unit selection and control
-- Implement pathfinding for units
-- Create combat systems
-- Add fog of war
-
-### 4X Strategy
-- Add turn-based mechanics
-- Implement tech trees
-- Create diplomacy systems
-- Add procedural map generation
-
-### Colony Sim
-- Add needs-based AI for citizens
-- Implement job and task systems
-- Create survival mechanics
-- Add seasons and weather
-
----
-
 ## Inspiration
 
 - **SimCity 3000/4** - The gold standard for city simulation
@@ -219,16 +183,13 @@ Buildings are defined in `app/data/buildings.ts`:
 
 ---
 
-## Creating Your Own Assets
+## Asset Pipeline
 
 Want to make your own isometric buildings? Here's a modern AI-assisted pipeline:
 
 ### 1. Generate Concept Art
-Use an image generation model to create your building concept. Look for models that handle architecture well.
 
-**Tools:** Midjourney, Stable Diffusion, or specialized models like [Nano Banana](https://replicate.com/fofr/nanobanana)
-
-**Tips:**
+Use Nano Banana to generate isometric concept art.
 - Prompt for "isometric view" or "3/4 view"
 - Specify architectural style (Victorian, modern, brutalist, etc.)
 - Include "game asset" or "video game building" for cleaner results
@@ -242,12 +203,8 @@ Turn your 2D concept into a 3D model. This gives you the ability to render from 
 - Tripo, Meshy, or other image-to-3D services
 
 ### 3. Render Isometric Sprites
-Set up your camera at the correct isometric angle and render out sprites for each direction.
 
-**Tools:**
-- [PixelOver](https://pixelover.io/) - Great for pixel art style renders
-- Blender - Free, full control over rendering
-- Any 3D software with orthographic camera support
+Run an automated pipeline to render out isometric sprites from the 3D model.
 
 **Camera setup for 2:1 isometric:**
 - Orthographic projection
@@ -257,7 +214,6 @@ Set up your camera at the correct isometric angle and render out sprites for eac
 ### 4. Post-Processing
 Clean up your renders and ensure consistency:
 - Match the color palette of existing assets
-- Add shadows/ambient occlusion if needed
 - Ensure transparent backgrounds
 - Check that the anchor point aligns with the grid
 
@@ -273,33 +229,6 @@ Clean up your renders and ensure consistency:
 
 ---
 
-## Asset Usage
-
-### Code
-The source code is MIT licensed - use it however you like.
-
-### Art Assets (Buildings, Props, Tiles)
-The art assets in this repository are provided for **learning, demos, and prototyping**. Some assets were created for this project, others are from commercial asset packs with varying licenses.
-
-**If you're releasing a game**, you should create or commission your own art assets to avoid any licensing issues.
-
-### Characters
-The character sprites (walking GIFs in `/public/Characters/`) are **NOT included in the open source license**. These are proprietary characters.
-
-**You may:**
-- Use them for demos, prototypes, and learning
-- Use them in non-commercial projects
-- Reference them for creating your own characters
-
-**You may NOT:**
-- Include them in published/released games
-- Redistribute them separately
-- Use them in commercial products
-
-If you're building a game for release, please create or commission your own character sprites.
-
----
-
 ## Contributing
 
 Contributions are welcome! Some areas that could use help:
@@ -307,41 +236,3 @@ Contributions are welcome! Some areas that could use help:
 - **More buildings** - Different architectural styles, eras, themes
 - **Performance** - Optimization for larger maps
 - **Documentation** - Tutorials, examples, better docs
-
----
-
-## License
-
-This project is licensed under the MIT License - see below.
-
-**Exception:** Character sprites in `/public/Characters/` are proprietary and not included in this license. See "Asset Usage" above.
-
-```
-MIT License
-
-Copyright (c) 2025
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
-
-## Acknowledgments
-
-Built with love for isometric games and the communities that keep them alive.

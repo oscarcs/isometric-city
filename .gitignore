@@ -42,3 +42,4 @@ next-env.d.ts
 
 # asset pipeline
 /assets/results.json
+/assets/3d-models-results.json
